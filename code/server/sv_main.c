@@ -38,6 +38,7 @@ cvar_t	*sv_rconPassword;		// password for remote server commands
 cvar_t	*sv_privatePassword;		// password for the privateClient slots
 cvar_t	*sv_e4cauth;			// QuadDamage: exigir cuenta e4Coin (L1)
 cvar_t	*sv_e4cauthDir;			// QuadDamage: directorio spool de qd-auth
+cvar_t	*sv_econSpool;			// QuadDamage: spool de eventos economicos (Tier 0)
 cvar_t	*sv_allowDownload;
 cvar_t	*sv_maxclients;
 

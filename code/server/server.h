@@ -271,6 +271,7 @@ extern	cvar_t	*sv_rconPassword;
 extern	cvar_t	*sv_privatePassword;
 extern	cvar_t	*sv_e4cauth;      // QuadDamage: exigir cuenta e4Coin
 extern	cvar_t	*sv_e4cauthDir;   // QuadDamage: directorio spool de qd-auth
+extern	cvar_t	*sv_econSpool;    // QuadDamage: spool de eventos economicos
 extern	cvar_t	*sv_allowDownload;
 extern	cvar_t	*sv_maxclients;
 
@@ -378,6 +379,10 @@ void SV_UserinfoChanged( client_t *cl );
 
 // sv_e4cauth.c — puente de autenticación e4Coin (cuenta = dirección L1)
 qboolean SV_E4CAuth_Check( const char *e4cticket, char *addrOut, int addrOutSize );
+
+// sv_econ.c — emisión de eventos económicos (Tier 0 server-authoritative)
+qboolean SV_EconEvent( const char *e4cAddr, const char *resource, int amount, const char *rarity );
+void SV_Econ_f( void );
 
 void SV_ClientEnterWorld( client_t *client, usercmd_t *cmd );
 void SV_FreeClient(client_t *client);
