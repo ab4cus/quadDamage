@@ -664,6 +664,9 @@ void SV_Init (void)
 	// server vars
 	sv_rconPassword = Cvar_Get ("rconPassword", "", CVAR_TEMP );
 	sv_privatePassword = Cvar_Get ("sv_privatePassword", "", CVAR_TEMP );
+	// QuadDamage: autenticacion por cuenta e4Coin (ver sv_e4cauth.c)
+	sv_e4cauth = Cvar_Get ("sv_e4cauth", "0", CVAR_ARCHIVE );
+	sv_e4cauthDir = Cvar_Get ("sv_e4cauthDir", "tickets", CVAR_ARCHIVE );
 	sv_fps = Cvar_Get ("sv_fps", "20", CVAR_TEMP );
 	sv_timeout = Cvar_Get ("sv_timeout", "200", CVAR_TEMP );
 	sv_zombietime = Cvar_Get ("sv_zombietime", "2", CVAR_TEMP );

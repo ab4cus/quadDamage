@@ -48,6 +48,7 @@ set(SYSTEM_SOURCES
 set(SERVER_SOURCES
     ${SOURCE_DIR}/server/sv_bot.c
     ${SOURCE_DIR}/server/sv_client.c
+    ${SOURCE_DIR}/server/sv_e4cauth.c
     ${SOURCE_DIR}/server/sv_ccmds.c
     ${SOURCE_DIR}/server/sv_game.c
     ${SOURCE_DIR}/server/sv_init.c
