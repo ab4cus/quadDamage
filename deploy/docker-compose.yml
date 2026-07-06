@@ -1,0 +1,64 @@
+# QuadDamage — stack local de prueba: servidor de juego + sidecars e4Coin.
+#   docker compose -f deploy/docker-compose.yml up --build
+#
+# Levanta el servidor dedicado con autenticación e4Coin y emisión económica.
+# Los sidecars (qd-auth, qd-oracle) viven en repos hermanos; se montan por build
+# context relativo. Ajusta las rutas si tu checkout difiere.
+services:
+  quaddamage-server:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: ab4cus/quaddamage-server:latest
+    container_name: quaddamage-server
+    restart: unless-stopped
+    environment:
+      QD_HOSTNAME: "QuadDamage Local"
+      QD_MAXCLIENTS: "16"
+      QD_AUTH: "1"                       # exige cuenta e4Coin
+      QD_TICKET_DIR: /shared/tickets
+      QD_ECON_SPOOL: /shared/econ
+    ports:
+      - "27960:27960/udp"               # P2P del juego
+    volumes:
+      - qd-data:/home/quake/.q3a
+      - shared:/shared                  # spool compartido con los sidecars
+
+  qd-auth:
+    build:
+      context: ../../qd-auth
+    image: ab4cus/qd-auth:latest
+    container_name: qd-auth
+    restart: unless-stopped
+    environment:
+      QD_AUTH_PORT: "8777"
+      E4COIND_RPC_URL: "http://e4coin-node:7832"   # nodo e4Coin (repo hermano)
+      E4COIND_RPC_USER: "${E4C_RPC_USER:-}"
+      E4COIND_RPC_PASS: "${E4C_RPC_PASS:-}"
+      QD_TICKET_DIR: /shared/tickets
+      L2_RPC_URL: "${L2_RPC_URL:-http://host.docker.internal:8545}"
+      IDENTITY_REGISTRY: "${IDENTITY_REGISTRY:-}"
+      FEDERATION_PK: "${FEDERATION_PK:-}"
+    ports:
+      - "8777:8777"
+    volumes:
+      - shared:/shared
+
+  qd-oracle:
+    build:
+      context: ../../qd-oracle
+    image: ab4cus/qd-oracle:latest
+    container_name: qd-oracle
+    restart: unless-stopped
+    environment:
+      QD_ECON_SPOOL: /shared/econ
+      L2_RPC_URL: "${L2_RPC_URL:-http://host.docker.internal:8545}"
+      QD_DEPLOY_JSON: /shared/deploy.json
+      GAME_SIGNER_PK: "${GAME_SIGNER_PK:-}"
+      RELAYER_PK: "${RELAYER_PK:-}"
+    volumes:
+      - shared:/shared
+
+volumes:
+  qd-data:
+  shared:
