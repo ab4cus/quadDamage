@@ -29,10 +29,10 @@ jobs:
           cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_STANDALONE=ON \
             -DBUILD_CLIENT=ON -DBUILD_SERVER=ON
           cmake --build build -j"$(nproc)"
-      - name: Empaquetar (todo el árbol de salida: cliente, servidor, módulos)
+      - name: "Empaquetar (cliente + servidor + modulos)"
         run: |
           test -d build/Release || { echo "no hay build/Release"; ls -R build | head; exit 1; }
-          echo "binarios producidos:"; ls -la build/Release
+          echo "binarios producidos"; ls -la build/Release
           tar czf quaddamage-${{ github.ref_name }}-linux-x86_64.tar.gz -C build Release
       - uses: actions/upload-artifact@v4
         with: { name: linux-x86_64, path: "*.tar.gz" }
