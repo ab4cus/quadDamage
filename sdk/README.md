@@ -39,6 +39,7 @@ const iron = await client.resourceBalance("iron");   // balance on-chain, sin ga
 
 ## API
 
+### `QuadDamageClient` (bajo nivel)
 | Método | Descripción |
 |---|---|
 | `register(country?)` | Crea la cuenta (firma el mensaje de registro) |
@@ -46,6 +47,42 @@ const iron = await client.resourceBalance("iron");   // balance on-chain, sin ga
 | `connectInfo()` | `{ e4cticket, e4caddr }` — lo que el engine espera en el userinfo |
 | `getIdentityProof()` | Merkle proof de identidad contra la raíz anclada |
 | `resourceBalance(type)` | Balance ERC-1155 del recurso (lectura on-chain) |
+
+### `QuadDamageLauncher` (cliente completo) + wallets
+
+El **cliente de QuadDamage** vive aquí: un launcher que orquesta wallet → login → ticket →
+lanzar el juego autenticado, más los balances para el HUD.
+
+```js
+import { QuadDamageLauncher, CliWallet, ExternalWallet } from "@ab4cus/quaddamage-sdk";
+
+// wallet: CliWallet (nodo local) o ExternalWallet (extensión/móvil/hardware)
+const wallet = new ExternalWallet({ address, sign: (m) => myWallet.sign(m) });
+
+const launcher = new QuadDamageLauncher({
+  wallet, authUrl, l2RpcUrl, contracts,
+  gameBinary: "/ruta/al/quaddamage",   // opcional, para launch()
+});
+
+await launcher.ensureAccount("MX");                 // registro idempotente
+const conn = await launcher.prepareConnect("1.2.3.4:27960");
+//  conn.args => ["+setu","e4cticket","<id>","+connect","1.2.3.4:27960"]
+await launcher.launch("1.2.3.4:27960");             // lanza el juego autenticado
+const hud = await launcher.balances(["iron", "artifact"]);
+```
+
+| Método del launcher | Descripción |
+|---|---|
+| `ensureAccount(country?)` | Registra la cuenta si no existe |
+| `prepareConnect(server)` | Login + ticket → `{ userinfo, args, e4caddr }` |
+| `launch(server, extra?)` | Lanza el binario del juego ya autenticado |
+| `balances(types[])` | Balances de recursos para el HUD |
+| `identity()` | Prueba de identidad (para mostrar "verificado") |
+
+**Cómo llega el ticket al servidor** (sin modificar el engine cliente): el launcher lanza el
+juego con `+setu e4cticket <id>`. En Quake 3, `setu` crea un cvar de **userinfo**, que viaja
+en el paquete `connect`; el servidor lo lee en `SV_DirectConnect` (`sv_e4cauth.c`), valida el
+ticket y fija `e4caddr` con la dirección e4Coin verificada.
 
 ## Ejemplo ejecutable
 

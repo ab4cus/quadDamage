@@ -146,4 +146,8 @@ function encStringTail(str, headWords) {
   return offset + len + padded;
 }
 
+// Re-exporta el cliente, el launcher y los wallets como API pública del SDK.
+export { QuadDamageLauncher } from "./launcher.mjs";
+export { CliWallet, ExternalWallet } from "./wallet.mjs";
+
 export default QuadDamageClient;
