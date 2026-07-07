@@ -1,5 +1,6 @@
 # QuadDamage — binarios multiplataforma (Linux/Windows/macOS) + imagen Docker.
-# Se dispara en tags v* o manualmente. Compila cliente + servidor dedicado.
+# Compila el CLIENTE (ioquake3) y el SERVIDOR dedicado (ioq3ded), más los módulos
+# del juego. Se dispara en tags v* o manualmente (workflow_dispatch).
 name: QuadDamage Release
 
 on:
@@ -12,63 +13,72 @@ permissions:
   packages: write
 
 jobs:
+  # ---------------------------------------------------------------- Linux
   linux:
-    name: Linux x86_64
+    name: Linux x86_64 (cliente + servidor)
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - run: |
+      - name: Dependencias
+        run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake pkg-config libsdl2-dev
+          sudo apt-get install -y build-essential cmake pkg-config \
+            libsdl2-dev libgl1-mesa-dev libopenal-dev
       - name: Build (cliente + servidor, standalone)
         run: |
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_STANDALONE=ON
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_STANDALONE=ON \
+            -DBUILD_CLIENT=ON -DBUILD_SERVER=ON
           cmake --build build -j"$(nproc)"
-      - name: Empaquetar
+      - name: Empaquetar (todo el árbol de salida: cliente, servidor, módulos)
         run: |
-          mkdir -p dist/quaddamage-linux-x86_64
-          cp build/Release/* dist/quaddamage-linux-x86_64/ 2>/dev/null || cp build/*ded build/ioquake3* dist/quaddamage-linux-x86_64/ 2>/dev/null || true
-          tar czf quaddamage-${{ github.ref_name }}-linux-x86_64.tar.gz -C dist quaddamage-linux-x86_64
+          test -d build/Release || { echo "no hay build/Release"; ls -R build | head; exit 1; }
+          echo "binarios producidos:"; ls -la build/Release
+          tar czf quaddamage-${{ github.ref_name }}-linux-x86_64.tar.gz -C build Release
       - uses: actions/upload-artifact@v4
         with: { name: linux-x86_64, path: "*.tar.gz" }
 
+  # ---------------------------------------------------------------- Windows
   windows:
-    name: Windows x86_64
+    name: Windows x86_64 (cliente + servidor)
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
       - uses: lukka/get-cmake@latest
-      - name: Build
+      - name: Build (libs internas)
         run: |
-          cmake -S . -B build -DBUILD_STANDALONE=ON -DUSE_INTERNAL_LIBS=ON
+          cmake -S . -B build -DBUILD_STANDALONE=ON -DUSE_INTERNAL_LIBS=ON `
+            -DBUILD_CLIENT=ON -DBUILD_SERVER=ON
           cmake --build build --config Release -j
       - name: Empaquetar
         shell: bash
         run: |
-          mkdir -p dist/quaddamage-win64
-          cp build/Release/*.exe dist/quaddamage-win64/ 2>/dev/null || cp build/*.exe dist/quaddamage-win64/ 2>/dev/null || true
-          7z a quaddamage-${{ github.ref_name }}-win64.zip ./dist/quaddamage-win64/*
+          test -d build/Release || { echo "no hay build/Release"; ls -R build | head; exit 1; }
+          ls -la build/Release
+          7z a quaddamage-${{ github.ref_name }}-win64.zip ./build/Release/*
       - uses: actions/upload-artifact@v4
         with: { name: win64, path: "*.zip" }
 
+  # ---------------------------------------------------------------- macOS
   macos:
-    name: macOS (arm64)
+    name: macOS arm64 (cliente + servidor)
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
-      - run: brew install cmake sdl2
+      - run: brew install cmake sdl2 openal-soft
       - name: Build
         run: |
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_STANDALONE=ON
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_STANDALONE=ON \
+            -DBUILD_CLIENT=ON -DBUILD_SERVER=ON
           cmake --build build -j"$(sysctl -n hw.ncpu)"
       - name: Empaquetar
         run: |
-          mkdir -p dist/quaddamage-macos
-          cp build/Release/* dist/quaddamage-macos/ 2>/dev/null || cp -r build/*.app dist/quaddamage-macos/ 2>/dev/null || true
-          tar czf quaddamage-${{ github.ref_name }}-macos.tar.gz -C dist quaddamage-macos
+          test -d build/Release || { echo "no hay build/Release"; ls -R build | head; exit 1; }
+          ls -la build/Release
+          tar czf quaddamage-${{ github.ref_name }}-macos-arm64.tar.gz -C build Release
       - uses: actions/upload-artifact@v4
-        with: { name: macos, path: "*.tar.gz" }
+        with: { name: macos-arm64, path: "*.tar.gz" }
 
+  # ---------------------------------------------------------------- Docker (servidor)
   docker:
     name: Imagen Docker del servidor (GHCR)
     runs-on: ubuntu-24.04
@@ -88,6 +98,7 @@ jobs:
             ghcr.io/ab4cus/quaddamage-server:latest
             ghcr.io/ab4cus/quaddamage-server:${{ github.ref_name }}
 
+  # ---------------------------------------------------------------- Release
   release:
     name: Publicar GitHub Release
     needs: [linux, windows, macos]
