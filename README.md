@@ -1,3 +1,50 @@
+# QuadDamage
+
+**QuadDamage** es el motor del juego insignia del ecosistema **PlayChain / e4Coin**
+(HelioMultiverso): un fork *standalone* de [ioquake3](https://ioquake3.org) con
+identidad y economía ligadas a blockchain. Todo el crédito del motor base es del
+proyecto ioquake3 (README original más abajo).
+
+Qué añade este fork sobre ioquake3:
+
+- **Auth e4Coin** (`code/server/sv_e4cauth.c`): la cuenta del jugador ES su dirección
+  e4Coin (L1); el ticket lo emite el sidecar [quadDamage-auth](../quadDamage-auth/).
+- **Economía Tier 0** (`code/server/sv_econ.c` + `Trap_EconEvent`): eventos económicos
+  server-authoritative → spool → sidecar [quadDamage-oracle](../quadDamage-oracle/) →
+  mint de `ResourceNFT` en la L2.
+- **`launcher/`**: capa fina que toma el ticket del [playChain-sdk](../playChain-sdk/)
+  y lo inyecta en las cvars de conexión (`+setu e4cticket +connect`).
+- Build headless containerizado del servidor (CMake `-DBUILD_SERVER=ON`, imagen Docker
+  ~123 MB) — ver [deploy/](deploy/).
+
+El motor es **GPL v2**: los sidecars (crypto, red, blockchain) viven fuera del binario y
+se comunican por ficheros spool/RPC (aislamiento de licencia y de latencia).
+
+## Instalación rápida (CLI)
+
+Binarios del último release (cliente + servidor dedicado), con verificación SHA256
+y sin sudo/admin (instala en `~/.quaddamage` o `%LOCALAPPDATA%\QuadDamage`):
+
+```bash
+# Linux / macOS
+curl -fsSL https://raw.githubusercontent.com/ab4cus/QuadDamage/develop/install.sh | sh
+```
+
+```powershell
+# Windows (PowerShell)
+irm https://raw.githubusercontent.com/ab4cus/QuadDamage/develop/install.ps1 | iex
+```
+
+Versión concreta: `QUADDAMAGE_VERSION=vX.Y.Z` (sh) o `$env:QUADDAMAGE_VERSION="vX.Y.Z"` (ps).
+
+Estructura y estado detallados: [docs/QUADDAMAGE-ESTRUCTURA.md](../docs/QUADDAMAGE-ESTRUCTURA.md).
+Pendiente: login en el menú del cliente, mod de gameplay que emita `Trap_EconEvent` en
+kills/victorias reales, y assets propios (hoy es standalone sin assets de Quake 3).
+
+---
+
+# README original de ioquake3
+
 ![Build](https://github.com/ioquake/ioq3/workflows/Build/badge.svg)
 
                    ,---------------------------------------.
