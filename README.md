@@ -206,7 +206,7 @@ Installation, for *nix
 The following CMake variables may be set, using `-D` on the command line.
 
 ```
-  BUILD_SERVER            - build the 'ioq3ded' server binary
+  BUILD_SERVER            - build the 'q4ded' server binary
   BUILD_CLIENT            - build the 'ioquake3' client binary
   BUILD_RENDERER_OPENGL1  - build the opengl1 client / renderer library
   BUILD_RENDERER_OPENGL2  - build the opengl2 client / renderer library

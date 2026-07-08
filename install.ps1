@@ -70,7 +70,7 @@ try {
 
     Say "listo [OK]  Ejecutables:"
     Get-ChildItem -Path $EngineDir -Filter "*.exe" | ForEach-Object { Say "  - $($_.Name)" }
-    Say "servidor dedicado (Tier 0):  ioq3ded.exe +set dedicated 2"
+    Say "servidor dedicado (Tier 0):  q4ded.exe +set dedicated 2"
     Say "desinstalar:                 Remove-Item -Recurse -Force '$InstallDir'"
 } finally {
     Remove-Item -Recurse -Force $Tmp -ErrorAction SilentlyContinue

@@ -19,7 +19,7 @@ RUN cmake -S . -B build \
       -DBUILD_GAME_LIBRARIES=ON -DBUILD_GAME_QVMS=OFF \
       -DBUILD_STANDALONE=ON && \
     cmake --build build -j"$(nproc)" && \
-    strip build/Release/ioq3ded
+    strip build/Release/q4ded
 
 # ------------------------------------------------------------------------------
 FROM ubuntu:24.04 AS runtime
@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && useradd -r -m -d /home/quake -s /usr/sbin/nologin quake
 
-COPY --from=build /src/build/Release/ioq3ded /usr/local/bin/quaddamage-server
+COPY --from=build /src/build/Release/q4ded /usr/local/bin/quaddamage-server
 COPY deploy/quaddamage-entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 

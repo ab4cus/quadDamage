@@ -129,7 +129,7 @@ main() {
     add_to_path
     say "listo ✓  Motor en $INSTALL_DIR/engine · ejecutables en $INSTALL_DIR/bin:"
     ls "$INSTALL_DIR/bin" | sed 's/^/  - /'
-    say "servidor dedicado (Tier 0):  ioq3ded +set dedicated 2  (ver docs del repo)"
+    say "servidor dedicado (Tier 0):  q4ded +set dedicated 2  (ver docs del repo)"
     say "desinstalar:                 rm -rf $INSTALL_DIR"
 }
 
