@@ -1,20 +1,20 @@
-# QuadDamage - instalador CLI para Windows (PowerShell 5.1+ / 7).
+# Quad4Damage - instalador CLI para Windows (PowerShell 5.1+ / 7).
 #
-#   irm https://raw.githubusercontent.com/ab4cus/QuadDamage/develop/install.ps1 | iex
+#   irm https://raw.githubusercontent.com/ab4cus/Quad4Damage/develop/install.ps1 | iex
 #
-# Sin admin: instala en %LOCALAPPDATA%\QuadDamage. Verifica SHA256 contra
-# SHA256SUMS del release (si existe). Version fijable: $env:QUADDAMAGE_VERSION.
+# Sin admin: instala en %LOCALAPPDATA%\Quad4Damage. Verifica SHA256 contra
+# SHA256SUMS del release (si existe). Version fijable: $env:QUAD4DAMAGE_VERSION.
 # Nota: archivo ASCII puro a proposito (PowerShell 5.1 lee sin BOM como ANSI).
 
 $ErrorActionPreference = "Stop"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-$Repo = "ab4cus/QuadDamage"
-$InstallDir = if ($env:QUADDAMAGE_DIR) { $env:QUADDAMAGE_DIR } else { Join-Path $env:LOCALAPPDATA "QuadDamage" }
+$Repo = "ab4cus/Quad4Damage"
+$InstallDir = if ($env:QUAD4DAMAGE_DIR) { $env:QUAD4DAMAGE_DIR } else { Join-Path $env:LOCALAPPDATA "Quad4Damage" }
 $EngineDir = Join-Path $InstallDir "engine"
-$Version = if ($env:QUADDAMAGE_VERSION) { $env:QUADDAMAGE_VERSION } else { "latest" }
+$Version = if ($env:QUAD4DAMAGE_VERSION) { $env:QUAD4DAMAGE_VERSION } else { "latest" }
 
-function Say([string]$msg) { Write-Host "quaddamage-install: $msg" }
+function Say([string]$msg) { Write-Host "quad4damage-install: $msg" }
 
 if ($Version -eq "latest") {
     Say "consultando la ultima version..."
@@ -23,9 +23,9 @@ if ($Version -eq "latest") {
 }
 Say "version: $Version"
 
-$Asset = "quaddamage-$Version-win64.zip"
+$Asset = "quad4damage-$Version-win64.zip"
 $Url = "https://github.com/$Repo/releases/download/$Version/$Asset"
-$Tmp = Join-Path ([IO.Path]::GetTempPath()) "quaddamage-install-$([guid]::NewGuid().ToString('N'))"
+$Tmp = Join-Path ([IO.Path]::GetTempPath()) "quad4damage-install-$([guid]::NewGuid().ToString('N'))"
 New-Item -ItemType Directory -Path $Tmp | Out-Null
 
 try {

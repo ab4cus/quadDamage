@@ -1534,7 +1534,7 @@ void SV_AddOperatorCommands( void ) {
 	Cmd_AddCommand ("kicknum", SV_KickNum_f);
 	Cmd_AddCommand ("clientkick", SV_KickNum_f); // Legacy command
 	Cmd_AddCommand ("status", SV_Status_f);
-	Cmd_AddCommand ("econevent", SV_Econ_f); // QuadDamage: emitir evento economico (Tier 0)
+	Cmd_AddCommand ("econevent", SV_Econ_f); // Quad4Damage: emitir evento economico (Tier 0)
 	Cmd_AddCommand ("serverinfo", SV_Serverinfo_f);
 	Cmd_AddCommand ("systeminfo", SV_Systeminfo_f);
 	Cmd_AddCommand ("dumpuser", SV_DumpUser_f);

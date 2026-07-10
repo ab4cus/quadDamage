@@ -1,6 +1,6 @@
 /*
 ===========================================================================
-QuadDamage — emisión de eventos económicos (Tier 0 server-authoritative).
+Quad4Damage — emisión de eventos económicos (Tier 0 server-authoritative).
 
 El game server es la fuente de máxima confianza de eventos económicos (kills,
 victorias, capturas). Este módulo expone SV_EconEvent(), que el mod (game)

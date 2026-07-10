@@ -1,5 +1,5 @@
 #!/bin/bash
-# Entrypoint del servidor QuadDamage. Evita el crash de Sys_ErrorDialog (xdg-open)
+# Entrypoint del servidor Quad4Damage. Evita el crash de Sys_ErrorDialog (xdg-open)
 # en entornos headless y arranca el servidor dedicado con la auth/econ de e4Coin.
 set -e
 export DISPLAY=""
@@ -9,16 +9,16 @@ mkdir -p "$QD_HOME/foobar" "${QD_ECON_SPOOL:-$QD_HOME/econ}" "${QD_TICKET_DIR:-$
 
 # default.cfg mínimo si no existe (requisito del build standalone)
 if [ ! -f "$QD_HOME/foobar/default.cfg" ]; then
-  printf 'set sv_hostname "QuadDamage"\nset sv_maxclients 16\n' > "$QD_HOME/foobar/default.cfg"
+  printf 'set sv_hostname "Quad4Damage"\nset sv_maxclients 16\n' > "$QD_HOME/foobar/default.cfg"
 fi
 
 # Config por variables de entorno:
 #   QD_AUTH=1 exige cuenta e4Coin; QD_TICKET_DIR/QD_ECON_SPOOL para los sidecars
-exec quaddamage-server \
+exec quad4damage-server \
   +set fs_homepath "$QD_HOME" \
   +set dedicated 2 \
   +set net_port "${QD_PORT:-27960}" \
-  +set sv_hostname "${QD_HOSTNAME:-QuadDamage}" \
+  +set sv_hostname "${QD_HOSTNAME:-Quad4Damage}" \
   +set sv_maxclients "${QD_MAXCLIENTS:-16}" \
   +set sv_e4cauth "${QD_AUTH:-0}" \
   +set sv_e4cauthDir "${QD_TICKET_DIR:-$QD_HOME/tickets}" \

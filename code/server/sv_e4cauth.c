@@ -1,6 +1,6 @@
 /*
 ===========================================================================
-QuadDamage — puente de autenticación e4Coin (lado servidor).
+Quad4Damage — puente de autenticación e4Coin (lado servidor).
 
 La CUENTA DE JUGADOR ES SU DIRECCIÓN e4Coin (L1). La verificación criptográfica
 (firma del challenge con la clave e4Coin) la hace el sidecar `qd-auth` FUERA de

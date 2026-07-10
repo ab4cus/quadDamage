@@ -1,20 +1,20 @@
 #!/bin/sh
-# QuadDamage — instalador CLI para Linux y macOS (cliente + servidor dedicado).
+# Quad4Damage — instalador CLI para Linux y macOS (cliente + servidor dedicado).
 #
-#   curl -fsSL https://raw.githubusercontent.com/ab4cus/QuadDamage/develop/install.sh | sh
+#   curl -fsSL https://raw.githubusercontent.com/ab4cus/Quad4Damage/develop/install.sh | sh
 #
 # Prácticas (estilo rustup/foundryup): funciones + main() al final, sin sudo
-# (instala en ~/.quaddamage), SHA256 verificado contra SHA256SUMS del release,
-# versión fijable con QUADDAMAGE_VERSION, QUADDAMAGE_NO_MODIFY_PATH=1 disponible.
+# (instala en ~/.quad4damage), SHA256 verificado contra SHA256SUMS del release,
+# versión fijable con QUAD4DAMAGE_VERSION, QUAD4DAMAGE_NO_MODIFY_PATH=1 disponible.
 set -eu
 
-REPO="ab4cus/QuadDamage"
-INSTALL_DIR="${QUADDAMAGE_DIR:-$HOME/.quaddamage}"
-VERSION="${QUADDAMAGE_VERSION:-latest}"
-NO_MODIFY_PATH="${QUADDAMAGE_NO_MODIFY_PATH:-0}"
+REPO="ab4cus/Quad4Damage"
+INSTALL_DIR="${QUAD4DAMAGE_DIR:-$HOME/.quad4damage}"
+VERSION="${QUAD4DAMAGE_VERSION:-latest}"
+NO_MODIFY_PATH="${QUAD4DAMAGE_NO_MODIFY_PATH:-0}"
 
-say()  { printf 'quaddamage-install: %s\n' "$1"; }
-err()  { printf 'quaddamage-install: ERROR: %s\n' "$1" >&2; exit 1; }
+say()  { printf 'quad4damage-install: %s\n' "$1"; }
+err()  { printf 'quad4damage-install: ERROR: %s\n' "$1" >&2; exit 1; }
 need() { command -v "$1" >/dev/null 2>&1 || err "se necesita '$1' y no está instalado"; }
 
 download() {
@@ -83,7 +83,7 @@ add_to_path() {
     esac
     LINE="export PATH=\"$INSTALL_DIR/bin:\$PATH\""
     if [ ! -f "$PROFILE" ] || ! grep -qs "$INSTALL_DIR/bin" "$PROFILE"; then
-        printf '\n# QuadDamage\n%s\n' "$LINE" >> "$PROFILE"
+        printf '\n# Quad4Damage\n%s\n' "$LINE" >> "$PROFILE"
         say "PATH añadido a $PROFILE"
     fi
 }
@@ -93,7 +93,7 @@ main() {
     detect_platform
     resolve_version
 
-    ASSET="quaddamage-$TAG-$ASSET_SUFFIX"
+    ASSET="quad4damage-$TAG-$ASSET_SUFFIX"
     URL="https://github.com/$REPO/releases/download/$TAG/$ASSET"
     TMP="$(mktemp -d)"
     trap 'rm -rf "$TMP"' EXIT

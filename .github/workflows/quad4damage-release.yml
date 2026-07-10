@@ -1,7 +1,7 @@
-# QuadDamage — binarios multiplataforma (Linux/Windows/macOS) + imagen Docker.
+# Quad4Damage — binarios multiplataforma (Linux/Windows/macOS) + imagen Docker.
 # Compila el CLIENTE (ioquake3) y el SERVIDOR dedicado (ioq3ded), más los módulos
 # del juego. Se dispara en tags v* o manualmente (workflow_dispatch).
-name: QuadDamage Release
+name: Quad4Damage Release
 
 on:
   push:
@@ -33,7 +33,7 @@ jobs:
         run: |
           test -d build/Release || { echo "no hay build/Release"; ls -R build | head; exit 1; }
           echo "binarios producidos"; ls -la build/Release
-          tar czf quaddamage-${{ github.ref_name }}-linux-x86_64.tar.gz -C build Release
+          tar czf quad4damage-${{ github.ref_name }}-linux-x86_64.tar.gz -C build Release
       - uses: actions/upload-artifact@v4
         with: { name: linux-x86_64, path: "*.tar.gz" }
 
@@ -54,7 +54,7 @@ jobs:
         run: |
           test -d build/Release || { echo "no hay build/Release"; ls -R build | head; exit 1; }
           ls -la build/Release
-          7z a quaddamage-${{ github.ref_name }}-win64.zip ./build/Release/*
+          7z a quad4damage-${{ github.ref_name }}-win64.zip ./build/Release/*
       - uses: actions/upload-artifact@v4
         with: { name: win64, path: "*.zip" }
 
@@ -74,7 +74,7 @@ jobs:
         run: |
           test -d build/Release || { echo "no hay build/Release"; ls -R build | head; exit 1; }
           ls -la build/Release
-          tar czf quaddamage-${{ github.ref_name }}-macos-arm64.tar.gz -C build Release
+          tar czf quad4damage-${{ github.ref_name }}-macos-arm64.tar.gz -C build Release
       - uses: actions/upload-artifact@v4
         with: { name: macos-arm64, path: "*.tar.gz" }
 
@@ -95,8 +95,8 @@ jobs:
           file: deploy/Dockerfile
           push: true
           tags: |
-            ghcr.io/ab4cus/quaddamage-server:latest
-            ghcr.io/ab4cus/quaddamage-server:${{ github.ref_name }}
+            ghcr.io/ab4cus/quad4damage-server:latest
+            ghcr.io/ab4cus/quad4damage-server:${{ github.ref_name }}
 
   # ---------------------------------------------------------------- Release
   release:

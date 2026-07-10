@@ -484,7 +484,7 @@ void SV_DirectConnect( netadr_t from ) {
 	// This is to allow us to reserve a couple slots here on our
 	// servers so we can play without having to kick people.
 
-	// QuadDamage: gate de autenticacion e4Coin. La cuenta es la direccion L1.
+	// Quad4Damage: gate de autenticacion e4Coin. La cuenta es la direccion L1.
 	// El cliente pasa "e4cticket" (spoolid) que emitio qd-auth tras verificar la
 	// firma del challenge contra el nodo e4coind. Aqui solo se consume el token.
 	{

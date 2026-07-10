@@ -269,9 +269,9 @@ extern	cvar_t	*sv_timeout;
 extern	cvar_t	*sv_zombietime;
 extern	cvar_t	*sv_rconPassword;
 extern	cvar_t	*sv_privatePassword;
-extern	cvar_t	*sv_e4cauth;      // QuadDamage: exigir cuenta e4Coin
-extern	cvar_t	*sv_e4cauthDir;   // QuadDamage: directorio spool de qd-auth
-extern	cvar_t	*sv_econSpool;    // QuadDamage: spool de eventos economicos
+extern	cvar_t	*sv_e4cauth;      // Quad4Damage: exigir cuenta e4Coin
+extern	cvar_t	*sv_e4cauthDir;   // Quad4Damage: directorio spool de qd-auth
+extern	cvar_t	*sv_econSpool;    // Quad4Damage: spool de eventos economicos
 extern	cvar_t	*sv_allowDownload;
 extern	cvar_t	*sv_maxclients;
 

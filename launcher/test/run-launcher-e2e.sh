@@ -1,5 +1,5 @@
 #!/bin/bash
-# E2E del launcher de QuadDamage (usa el SDK de plataforma playChain-sdk/js).
+# E2E del launcher de Quad4Damage (usa el SDK de plataforma play4Chain-sdk/js).
 # Levanta el stack minimo y, desde la perspectiva del jugador, registra, hace
 # login, obtiene el ticket y genera los args de connect de Quake 3.
 set -uo pipefail
@@ -7,9 +7,9 @@ export PATH="$HOME/.foundry/bin:$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin"
 export DISPLAY=""
 ROOT="$HOME/developer/ab4cus/projects/heliomultiverso"
 E4="$ROOT/e4Coin-core/src"
-CONTRACTS="$ROOT/e4Coin-playChain"
-AUTH="$ROOT/quadDamage-auth"
-LAUNCHER="$ROOT/quadDamage/launcher"
+CONTRACTS="$ROOT/e4Coin-play4Chain"
+AUTH="$ROOT/quad4Damage-auth"
+LAUNCHER="$ROOT/quad4Damage/launcher"
 
 T=$(mktemp -d); TICKETS=$(mktemp -d); AUTH_PID=""
 DATADIR="$T/e4coin"; mkdir -p "$DATADIR"
@@ -40,6 +40,6 @@ FEDERATION_PK="0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff8
   node src/server.mjs > /tmp/auth.log 2>&1 & AUTH_PID=$!
 sleep 1.5
 
-echo "=== 2. LAUNCHER de QuadDamage (usa playChain-sdk) ==="
+echo "=== 2. LAUNCHER de Quad4Damage (usa play4Chain-sdk) ==="
 cd "$LAUNCHER"
 QD_RUN="$T" E4COIN_CLI="$E4/e4coin-cli" node examples/launch.mjs 1.2.3.4:27960

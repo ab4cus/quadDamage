@@ -522,7 +522,7 @@ gitem_t	bg_itemlist[] =
 */
 	{
 		"item_quad", 
-		"sound/items/quaddamage.wav",
+		"sound/items/quad4damage.wav",
         { "models/powerups/instant/quad.md3", 
         "models/powerups/instant/quad_ring.md3",
 		NULL, NULL },

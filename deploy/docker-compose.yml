@@ -1,19 +1,19 @@
-# QuadDamage — stack local de prueba: servidor de juego + sidecars e4Coin.
+# Quad4Damage — stack local de prueba: servidor de juego + sidecars e4Coin.
 #   docker compose -f deploy/docker-compose.yml up --build
 #
 # Levanta el servidor dedicado con autenticación e4Coin y emisión económica.
 # Los sidecars (qd-auth, qd-oracle) viven en repos hermanos; se montan por build
 # context relativo. Ajusta las rutas si tu checkout difiere.
 services:
-  quaddamage-server:
+  quad4damage-server:
     build:
       context: ..
       dockerfile: deploy/Dockerfile
-    image: ab4cus/quaddamage-server:latest
-    container_name: quaddamage-server
+    image: ab4cus/quad4damage-server:latest
+    container_name: quad4damage-server
     restart: unless-stopped
     environment:
-      QD_HOSTNAME: "QuadDamage Local"
+      QD_HOSTNAME: "Quad4Damage Local"
       QD_MAXCLIENTS: "16"
       QD_AUTH: "1"                       # exige cuenta e4Coin
       QD_TICKET_DIR: /shared/tickets

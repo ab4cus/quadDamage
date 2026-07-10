@@ -1,26 +1,26 @@
-// quaddamage-launcher — adaptador de arranque específico de QuadDamage (motor Q3).
+// quad4damage-launcher — adaptador de arranque específico de Quad4Damage (motor Q3).
 //
-// Capa FINA sobre el SDK de plataforma (@ab4cus/playchain-sdk). El SDK hace el
+// Capa FINA sobre el SDK de plataforma (@ab4cus/play4chain-sdk). El SDK hace el
 // trabajo reutilizable (wallet, login, ticket, balances, identidad); aquí solo se
 // añade lo propio del motor Quake 3: formatear el ticket en las cvars de userinfo
 // y lanzar el binario del cliente.
 //
-// En un checkout instalado sería:  import { PlayChainLauncher } from "@ab4cus/playchain-sdk";
+// En un checkout instalado sería:  import { Play4ChainLauncher } from "@ab4cus/play4chain-sdk";
 // En el monorepo se importa por ruta relativa al módulo js del SDK.
 
 import { spawn } from "node:child_process";
-import { PlayChainLauncher, CliWallet, ExternalWallet }
-  from "../../playChain-sdk/js/src/index.mjs";
+import { Play4ChainLauncher, CliWallet, ExternalWallet }
+  from "../../play4Chain-sdk/js/src/index.mjs";
 
 export { CliWallet, ExternalWallet };
 
-export class QuadDamageLauncher {
+export class Quad4DamageLauncher {
   /**
-   * @param {object} o  igual que PlayChainLauncher + gameBinary opcional
-   * @param {string} [o.gameBinary] ruta al ejecutable del cliente QuadDamage
+   * @param {object} o  igual que Play4ChainLauncher + gameBinary opcional
+   * @param {string} [o.gameBinary] ruta al ejecutable del cliente Quad4Damage
    */
   constructor(o) {
-    this.core = new PlayChainLauncher(o);
+    this.core = new Play4ChainLauncher(o);
     this.gameBinary = o.gameBinary;
   }
 
@@ -36,7 +36,7 @@ export class QuadDamageLauncher {
    * El ticket viaja en el userinfo con la clave "e4cticket" (la que valida el
    * servidor en SV_DirectConnect). En Q3 los cvars de userinfo se crean con
    * `setu`, así que NO hace falta modificar el engine cliente.
-   * @param {string} serverAddr  ip:puerto del servidor QuadDamage
+   * @param {string} serverAddr  ip:puerto del servidor Quad4Damage
    */
   async prepareConnect(serverAddr) {
     const { ticket, address } = await this.core.connect();
@@ -53,4 +53,4 @@ export class QuadDamageLauncher {
   }
 }
 
-export default QuadDamageLauncher;
+export default Quad4DamageLauncher;

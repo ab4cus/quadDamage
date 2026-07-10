@@ -1,5 +1,5 @@
-# QuadDamage — servidor dedicado standalone. Build multi-stage desde fuente.
-#   docker build -f deploy/Dockerfile -t ab4cus/quaddamage-server:latest .
+# Quad4Damage — servidor dedicado standalone. Build multi-stage desde fuente.
+#   docker build -f deploy/Dockerfile -t ab4cus/quad4damage-server:latest .
 # ------------------------------------------------------------------------------
 FROM ubuntu:24.04 AS build
 
@@ -30,13 +30,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && useradd -r -m -d /home/quake -s /usr/sbin/nologin quake
 
-COPY --from=build /src/build/Release/q4ded /usr/local/bin/quaddamage-server
-COPY deploy/quaddamage-entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY --from=build /src/build/Release/q4ded /usr/local/bin/quad4damage-server
+COPY deploy/quad4damage-entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # basegame standalone + default.cfg mínimo (necesario para arrancar sin assets Q3)
 RUN mkdir -p /home/quake/.q3a/foobar && \
-    printf 'set sv_hostname "QuadDamage"\nset sv_maxclients 16\n' > /home/quake/.q3a/foobar/default.cfg && \
+    printf 'set sv_hostname "Quad4Damage"\nset sv_maxclients 16\n' > /home/quake/.q3a/foobar/default.cfg && \
     chown -R quake:quake /home/quake
 
 USER quake
